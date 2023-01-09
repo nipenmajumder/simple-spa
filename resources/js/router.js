@@ -1,7 +1,8 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import {createWebHistory, createRouter} from 'vue-router'
 import Home from './components/Home.vue'
 import About from './components/About.vue'
 import Contact from './components/Contact.vue'
+
 const routes = [
     {
         path: '/',
@@ -33,6 +34,9 @@ const routes = [
 ]
 const router = createRouter({
     history: createWebHistory(),
-    routes, //same --- > routes:routes
+    routes,
+    scrollBehavior() {
+        return {x: 0, y: 0}
+    },
 })
 export default router
