@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::get('/get-token', [AuthController::class, 'isAuthenticated']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
