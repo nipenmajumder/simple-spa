@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $user->avatar = $user->thumbnail;
+//            $user->avatar = $user->thumbnail;
             $user->token = $user->createToken(self::AUTH_TOKEN)->plainTextToken;
             return $this->respondSuccess($user, 'Login successful');
 
