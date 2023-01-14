@@ -2,10 +2,8 @@
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner">
-                <!-- Register -->
                 <div class="card">
                     <div class="card-body">
-                        <!-- Logo -->
                         <div class="app-brand justify-content-center">
                             <a href="index.html" class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
@@ -66,11 +64,10 @@
                                 <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
                             </a>
                         </div>
-                        <!-- /Logo -->
                         <h4 class="mb-2">Welcome to Sneat! 👋</h4>
                         <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-                        <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                        <form class="mb-3" @submit.prevent="login">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email or Username</label>
                                 <input
@@ -80,6 +77,7 @@
                                     name="email-username"
                                     placeholder="Enter your email or username"
                                     autofocus
+                                    v-model="email"
                                 />
                             </div>
                             <div class="mb-3 form-password-toggle">
@@ -97,13 +95,15 @@
                                         name="password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         aria-describedby="password"
+                                        v-model="password"
                                     />
-                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    <span class="input-group-text cursor-pointer" @click="showPassword"><i
+                                        class="bx bx-hide"></i></span>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember-me" />
+                                    <input class="form-check-input" type="checkbox" id="remember-me"/>
                                     <label class="form-check-label" for="remember-me"> Remember Me </label>
                                 </div>
                             </div>
@@ -127,8 +127,39 @@
 </template>
 
 <script>
+import {LOGIN} from "../store/action";
+import { mapActions } from 'pinia';
+import { authUser } from '../store/store'
 export default {
-    name: "Login.vue"
+    name: "Login.vue",
+    data() {
+        return {
+            email: '',
+            password: '',
+        }
+    },
+    methods: {
+        ...mapActions(authUser, ['LOGIN']),
+        login() {
+            axios.post('/api/auth/login', {
+                email: this.email,
+                password: this.password
+            }).then(response => {
+                this.LOGIN(response.data.result);
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+        showPassword() {
+            let inputType = document.getElementById('password').type;
+            if (inputType === 'password') {
+                document.getElementById('password').type = 'text';
+            } else {
+                document.getElementById('password').type = 'password';
+            }
+        }
+
+    }
 }
 </script>
 

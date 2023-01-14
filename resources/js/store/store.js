@@ -1,15 +1,14 @@
 import {defineStore} from 'pinia'
+import {setToken} from '../helpers/auth'
+import action from "./action";
+import mutations from "./mutations";
 
-
-const store = defineStore({
+export const authUser = defineStore('auth', {
     state: () => {
-        return {user: {}}
+        return {
+            user: null
+        }
     },
-    // could also be defined as
-    // state: () => ({ count: 0 })
-    actions: {
-
-    },
-})
-
-export default store;
+    action,
+    mutations,
+});

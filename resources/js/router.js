@@ -2,8 +2,7 @@ import {createWebHistory, createRouter} from 'vue-router'
 import AppLayout from "./layouts/AppLayout.vue";
 import Dashboard from "./layouts/Dashboard.vue";
 import Login from "./pages/Login.vue";
-import store from "./store/store.js";
-import {request} from "./helpers/request";
+
 const routes = [
     {
         path: '/',
