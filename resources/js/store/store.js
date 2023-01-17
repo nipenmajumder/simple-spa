@@ -1,14 +1,34 @@
 import {defineStore} from 'pinia'
 import {setToken} from '../helpers/auth'
-import action from "./action";
-import mutations from "./mutations";
 
 export const authUser = defineStore('auth', {
     state: () => {
         return {
-            user: null
+            user: {},
+            token: null,
         }
     },
-    action,
-    mutations,
+    // action,
+    actions: {
+        async logIn(data) {
+            setToken(data.token);
+            this.setUser(data);
+            this.setUserToken(data.token);
+        },
+        setUser(data) {
+            this.user = {...data};
+        },
+        setUserToken(token) {
+            this.token = token;
+        },
+
+    },
+    // getters: {
+    //     getUser: (state) => {
+    //         return state.user;
+    //     },
+    //     getToken: (state) => {
+    //         return state.token;
+    //     }
+    // },
 });
