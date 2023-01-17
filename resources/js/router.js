@@ -2,11 +2,13 @@ import {createWebHistory, createRouter} from 'vue-router'
 import AppLayout from "./layouts/AppLayout.vue";
 import Dashboard from "./layouts/Dashboard.vue";
 import Login from "./pages/Login.vue";
+import {authUser} from './store/store'
+import axios from "axios";
 
 const routes = [
     {
         path: '/',
-        redirect: { name: 'dashboard' },
+        redirect: {name: 'dashboard'},
         component: AppLayout,
         meta: {
             title: 'AppLayout',
@@ -44,13 +46,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    let state = authUser();
+
     let isAuthRequired = to.meta.requiresAuth || false;
+    // let isAdmin = to.meta.admin || false;
     let isGuest = to.meta.isGuest || false;
 
-    // let isLoggedIn = store.state.user.token || null;
-     let isLoggedIn =  null;
+    let isLoggedIn = state.token || null;
+    // console.log(isLoggedIn);
+    // let permission = store.state.user.role || null;
 
-    if(isAuthRequired && !isLoggedIn) {
+    if (isAuthRequired && !isLoggedIn) {
         next({
             path: '/login',
         });
@@ -62,17 +68,20 @@ router.beforeEach((to, from, next) => {
         });
     }
 
-    // let currentLocalToken =  store.state.user.token;
-    // request.get('/get-token')
-    //     .then((response) => {
-    //         if (response.data !== currentLocalToken && isLoggedIn){
-    //             console.log('logged in')
-    //             next({
-    //                 path: '/token',
-    //             });
-    //         }
-    //     })
+    if (!isLoggedIn){
+        console.log('not logged in')
+    }
+    let currentLocalToken = state.token;
+    axios.get('/get-token')
+        .then((response) => {
+            if (response.data !== currentLocalToken && isLoggedIn) {
+                console.log('logged in')
+                next({
+                    path: '/token',
+                });
+            }
+        })
 
     next();
-});
+})
 export default router
