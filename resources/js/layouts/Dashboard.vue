@@ -538,8 +538,14 @@
 </template>
 
 <script>
+import '../../../public/assets/vendor/libs/jquery/jquery.js';
 export default {
-    name: "Dashboard.vue"
+    name: "Dashboard.vue",
+    mounted() {
+        document.ready(function (){
+           console.log("jquery");
+        });
+    }
 }
 </script>
 
