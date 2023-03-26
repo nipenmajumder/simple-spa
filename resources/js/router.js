@@ -2,7 +2,7 @@ import {createWebHistory, createRouter} from 'vue-router'
 import AppLayout from "./layouts/AppLayout.vue";
 import Dashboard from "./layouts/Dashboard.vue";
 import Login from "./pages/Login.vue";
-import {authUser} from './store/store'
+import {useAuthUser} from './stores/userStore';
 import axios from "axios";
 
 const routes = [
@@ -46,15 +46,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    let state = authUser();
-
+    let state = useAuthUser();
     let isAuthRequired = to.meta.requiresAuth || false;
     // let isAdmin = to.meta.admin || false;
     let isGuest = to.meta.isGuest || false;
 
-    let isLoggedIn = state.token || null;
+    let isLoggedIn = state.token || localStorage.getItem('simple_spa');
     // console.log(isLoggedIn);
-    // let permission = store.state.user.role || null;
+    // let permission = stores.state.user.role || null;
 
     if (isAuthRequired && !isLoggedIn) {
         next({
@@ -69,13 +68,11 @@ router.beforeEach((to, from, next) => {
     }
 
     if (!isLoggedIn){
-        console.log('not logged in')
     }
     let currentLocalToken = state.token;
     axios.get('/get-token')
         .then((response) => {
             if (response.data !== currentLocalToken && isLoggedIn) {
-                console.log('logged in')
                 next({
                     path: '/token',
                 });

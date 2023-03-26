@@ -5,9 +5,9 @@ export default {
         };
     },
     methods: {
-        // routeName(name) {
-        //     return route(name);
-        // },
+        routeName(name) {
+            return route(name);
+        },
         newTab(url) {
             window.open(url, '_blank');
         },

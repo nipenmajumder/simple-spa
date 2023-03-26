@@ -23,7 +23,6 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-//            $user->avatar = $user->thumbnail;
             $user->token = $user->createToken(self::AUTH_TOKEN)->plainTextToken;
             return $this->respondSuccess($user, 'Login successful');
 
@@ -31,10 +30,10 @@ class AuthController extends Controller
         return response()->json(['error' => 'Unauthorised'], 401);
     }
 
-    public function logout(): string
+    public function logout(): JsonResponse
     {
         auth()->user()->tokens()->delete();
-        return 'user logged out';
+       return $this->respondWithSuccess( null,'Logout successful');
     }
 
     public function isAuthenticated(Request $request): ?string

@@ -49,6 +49,6 @@
 <script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 <script src="{{asset('assets/js/main.js')}}"></script>
 <script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>
-<script async defer src="https://buttons.github.io/buttons.js"></script>
+{{--<script async defer src="https://buttons.github.io/buttons.js"></script>--}}
 </body>
 </html>
