@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
-import {setToken} from '../helpers/auth'
+import {removeToken, setToken} from '../helpers/auth'
 
-export const authUser = defineStore('auth', {
+export const useAuthUser = defineStore('authUser', {
     state: () => {
         return {
             user: {},
@@ -10,10 +10,10 @@ export const authUser = defineStore('auth', {
     },
     // action,
     actions: {
-        async logIn(data) {
-            setToken(data.token);
+        logIn(data) {
             this.setUser(data);
             this.setUserToken(data.token);
+            setToken(data.token);
         },
         setUser(data) {
             this.user = {...data};
@@ -21,7 +21,12 @@ export const authUser = defineStore('auth', {
         setUserToken(token) {
             this.token = token;
         },
+        logOut() {
+            this.user = {};
+            this.token = null;
+            removeToken();
 
+        }
     },
     // getters: {
     //     getUser: (state) => {

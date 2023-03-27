@@ -127,11 +127,16 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia';
-import {authUser} from '../store/store'
+import {useAuthUser} from '../stores/userStore'
 
 export default {
     name: "Login.vue",
+    setup() {
+        const userStore = useAuthUser();
+        return {
+            userStore
+        }
+    },
     data() {
         return {
             email: '',
@@ -139,18 +144,13 @@ export default {
         }
     },
     methods: {
-        ...mapActions(authUser, ['logIn']),
-
         login() {
             axios.post('/api/auth/login', {
                 email: this.email,
                 password: this.password
             }).then(response => {
-                console.log( response.data.message);
-                // this.$toastr.s("Success", response.data.message);
-                this.logIn(response.data.result);
+                this.userStore.logIn(response.data.result);
                 this.$router.push({name: 'dashboard'});
-
             }).catch(error => {
                 console.log(error)
             })

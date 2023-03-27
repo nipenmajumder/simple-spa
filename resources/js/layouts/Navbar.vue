@@ -79,23 +79,38 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="auth-login-basic.html">
+                            <a class="dropdown-item" href="javascript:void(0)" @click="logout">
                                 <i class="bx bx-power-off me-2"></i>
                                 <span class="align-middle">Log Out</span>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <!--/ User -->
             </ul>
         </div>
     </nav>
-    <!-- / Navbar -->
 </template>
 
 <script>
+import {useAuthUser} from '../stores/userStore'
+import axios from "axios";
 export default {
-    name: "Navbar.vue"
+    name: "Navbar.vue",
+    setup() {
+        const userStore = useAuthUser();
+        return {
+            userStore
+        }
+    },
+    methods: {
+        logout() {
+            axios.post('/api/logout').then((response) => {
+                this.userStore.logOut();
+            }).catch((error) => {
+                console.log(error)
+            });
+        }
+    }
 }
 </script>
 
